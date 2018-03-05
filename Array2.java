@@ -1,142 +1,350 @@
-    //Given a string, return a string where for every char in the original, there are two chars.
+    //Return the number of even ints in the given array. Note: the % "mod" operator computes the remainder, e.g. 5 % 2 is 1.
     //
     //
-    //doubleChar("The") → "TThhee"
-    //doubleChar("AAbb") → "AAAAbbbb"
-    //doubleChar("Hi-There") → "HHii--TThheerree"
+    //countEvens([2, 1, 2, 3, 4]) → 3
+    //countEvens([2, 2, 0]) → 3
+    //countEvens([1, 3, 5]) → 0
 
-    public String doubleChar(String str) {
-        int length = str.length();
-        String result = "";
-        if (length == 0) return str;
+    public int countEvens(int[] nums) {
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] % 2 == 0) count++;
+        }
+        return count;
+    }
+
+    //
+    //Given an array length 1 or more of ints, return the difference between the largest and smallest values in the array. Note: the built-in Math.min(v1, v2) and Math.max(v1, v2) methods return the smaller or larger of two values.
+    //
+    //
+    //bigDiff([10, 3, 5, 6]) → 7
+    //bigDiff([7, 2, 10, 9]) → 8
+    //bigDiff([2, 10, 7, 2]) → 8
+
+    public int bigDiff(int[] nums) {
+        int min = nums[0];
+        int max = 0;
+        if (nums.length == 1) return 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (min > nums[i]) min = nums[i];
+            if (max < nums[i]) max = nums[i];
+        }
+        return max - min;
+    }
+
+    //
+    //Return the "centered" average of an array of ints, which we'll say is the mean average of the values, except ignoring the largest and smallest values in the array. If there are multiple copies of the smallest value, ignore just one copy, and likewise for the largest value. Use int division to produce the final average. You may assume that the array is length 3 or more.
+    //
+    //
+    //centeredAverage([1, 2, 3, 4, 100]) → 3
+    //centeredAverage([1, 1, 5, 5, 10, 8, 7]) → 5
+    //centeredAverage([-10, -4, -2, -4, -2, 0]) → -3
+
+    public int centeredAverage(int[] nums) {
+        Arrays.sort(nums);
+        int sum = 0;
+        int min = nums[0];
+        int max = nums[0];
+        for (int i = 0; i < nums.length; i++) {
+            min = Math.min(min, nums[i]);
+            max = Math.max(max, nums[i]);
+            sum += nums[i];
+        }
+        return (sum - max - min) / (nums.length - 2);
+    }
+
+    //
+    //Return the sum of the numbers in the array, returning 0 for an empty array. Except the number 13 is very unlucky, so it does not count and numbers that come immediately after a 13 also do not count.
+    //
+    //
+    //sum13([1, 2, 2, 1]) → 6
+    //sum13([1, 1]) → 2
+    //sum13([1, 2, 2, 1, 13]) → 6
+
+    public int sum13(int[] nums) {
+        int sum = 0;
+        if (nums.length == 0) return 0;
         else {
-            for (int i = 0; i < length; i++) {
-                result = result + str.substring(i, i + 1) + str.substring(i, i + 1);
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] != 13) {
+                    sum += nums[i];
+                }
+                if (nums[i] == 13 && i != nums.length - 1) {
+                    i++;
+                    continue;
+                }
+                if (nums[i] == 13 && i == nums.length - 1) {
+                    break;
+                }
             }
-            return result;
+            return sum;
         }
     }
 
-    //
-    //Return the number of times that the string "hi" appears anywhere in the given string.
-    //
-    //
-    //countHi("abc hi ho") → 1
-    //countHi("ABChi hi") → 2
-    //countHi("hihi") → 2
 
-    public int countHi(String str) {
-        int length = str.length();
-        int counter = 0;
-        for (int i = 0; i < length - 1; i++) {
-            if (str.substring(i, i + 2).equals("hi")) counter++;
+    //Return the sum of the numbers in the array, except ignore sections of numbers starting with a 6 and extending to the next 7 (every 6 will be followed by at least one 7). Return 0 for no numbers.
+    //
+    //
+    //sum67([1, 2, 2]) → 5
+    //sum67([1, 2, 2, 6, 99, 99, 7]) → 5
+    //sum67([1, 1, 6, 7, 2]) → 4
+
+    public int sum67(int[] nums) {
+        int sum = 0;
+        if (nums.length == 0) return 0;
+        else {
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] != 6) sum += nums[i];
+                if (nums[i] == 6) {
+                    while (nums[i] != 7) {
+                        i++;
+                    }
+
+                }
+            }
+            return sum;
         }
-        return counter;
     }
 
-    //
-    //Return true if the string "cat" and "dog" appear the same number of times in the given string.
-    //
-    //
-    //catDog("catdog") → true
-    //catDog("catcat") → false
-    //catDog("1cat1cadodog") → true
 
-    public boolean catDog(String str) {
-        int length = str.length();
-        int counterCat = 0;
-        int counterDog = 0;
-        for (int i = 0; i < length - 2; i++) {
-            if (str.substring(i, i + 3).equals("cat")) counterCat++;
-            if (str.substring(i, i + 3).equals("dog")) counterDog++;
-        }
-        return (counterCat == counterDog);
-    }
+    //Given an array of ints, return true if the array contains a 2 next to a 2 somewhere.
+    //
+    //
+    //has22([1, 2, 2]) → true
+    //has22([1, 2, 1, 2]) → false
+    //has22([2, 1, 2]) → false
 
-    //
-    //Return the number of times that the string "code" appears anywhere in the given string, except we'll accept any letter for the 'd', so "cope" and "cooe" count.
-    //
-    //
-    //countCode("aaacodebbb") → 1
-    //countCode("codexxcode") → 2
-    //countCode("cozexxcope") → 2
-
-    public int countCode(String str) {
-        int length = str.length();
-        int counter = 0;
-        for (int i = 0; i < length - 3; i++) {
-            if (str.substring(i, i + 2).equals("co") && str.substring(i + 3, i + 4).equals("e")) counter++;
-        }
-        return counter;
-    }
-
-    //
-    //Given two strings, return true if either of the strings appears at the very end of the other string, ignoring upper/lower case differences (in other words, the computation should not be "case sensitive"). Note: str.toLowerCase() returns the lowercase version of a string.
-    //
-    //
-    //endOther("Hiabc", "abc") → true
-    //endOther("AbC", "HiaBc") → true
-    //endOther("abc", "abXabc") → true
-
-    public boolean endOther(String a, String b) {
-        a = a.toLowerCase();
-        b = b.toLowerCase();
-        int lengthA = a.length();
-        int lengthB = b.length();
-        if (lengthA >= lengthB) {
-            return (a.substring(lengthA - lengthB, lengthA).equals(b));
-        } else return (b.substring(lengthB - lengthA, lengthB).equals(a));
-    }
-
-    //
-    //Return true if the given string contains an appearance of "xyz" where the xyz is not directly preceeded by a period (.). So "xxyz" counts but "x.xyz" does not.
-    //
-    //
-    //xyzThere("abcxyz") → true
-    //xyzThere("abc.xyz") → false
-    //xyzThere("xyz.abc") → true
-
-    public boolean xyzThere(String str) {
-        int length = str.length();
-        if (length >= 3 && str.substring(0, 3).equals("xyz")) return true;
-        for (int i = 1; i < length - 2; i++) {
-            if ((str.charAt(i - 1) != '.') && str.substring(i, i + 3).equals("xyz")) return true;
-        }
-        return false;
-    }
-
-    //
-    //Return true if the given string contains a "bob" string, but where the middle 'o' char can be any char.
-    //
-    //
-    //bobThere("abcbob") → true
-    //bobThere("b9b") → true
-    //bobThere("bac") → false
-
-    public boolean bobThere(String str) {
-        int length = str.length();
-        if (length < 3) return false;
-        for (int i = 0; i < length - 2; i++) {
-            if (str.substring(i, i + 1).equals("b") && (str.substring(i + 2, i + 3).equals("b"))) return true;
+    public boolean has22(int[] nums) {
+        if (nums.length < 2) return false;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == 2 && nums[i + 1] == 2) return true;
         }
         return false;
     }
 
 
     //
-    //We'll say that a String is xy-balanced if for all the 'x' chars in the string, there exists a 'y' char somewhere later in the string. So "xxy" is balanced, but "xyx" is not. One 'y' can balance multiple 'x's. Return true if the given string is xy-balanced.
+    //Given an array of ints, return true if the array contains no 1's and no 3's.
     //
     //
-    //xyBalance("aaxbby") → true
-    //xyBalance("aaxbb") → false
-    //xyBalance("yaaxbb") → false
+    //lucky13([0, 2, 4]) → true
+    //lucky13([1, 2, 3]) → false
+    //lucky13([1, 2, 4]) → false
 
-    public boolean xyBalance(String str) {
-        int length = str.length();
-        if (length < 2 && !str.substring(0).equals("x")) return true;
-        if (str.substring(length - 1, length).equals("x")) return false;
-        for (int i = 0; i < length - 1; i++) {
-            if (str.substring(i, i + 1).equals("x") && (str.substring(i + 1, length).contains("y")) || (!str.contains("x") && !str.contains("x")))
+    public boolean lucky13(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1 || nums[i] == 3) return false;
+        }
+        return true;
+    }
+
+
+    //
+    //Given an array of ints, return true if the sum of all the 2's in the array is exactly 8.
+    //
+    //
+    //sum28([2, 3, 2, 2, 4, 2]) → true
+    //sum28([2, 3, 2, 2, 4, 2, 2]) → false
+    //sum28([1, 2, 3, 4]) → false
+
+    public boolean sum28(int[] nums) {
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 2) sum += 2;
+        }
+        return (sum == 8);
+
+    }
+
+
+    //
+    //Given an array of ints, return true if the number of 1's is greater than the number of 4's
+    //
+    //
+    //more14([1, 4, 1]) → true
+    //more14([1, 4, 1, 4]) → false
+    //more14([1, 1]) → true
+
+    public boolean more14(int[] nums) {
+        int one = 0;
+        int four = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1) one++;
+            if (nums[i] == 4) four++;
+        }
+        return (one > four);
+    }
+
+
+    //
+    //Given a number n, create and return a new int array of length n, containing the numbers 0, 1, 2, ... n-1. The given n may be 0, in which case just return a length 0 array. You do not need a separate if-statement for the length-0 case; the for-loop should naturally execute 0 times in that case, so it just works. The syntax to make a new int array is: new int[desired_length]   (See also: FizzBuzz Code)
+    //
+    //
+    //fizzArray(4) → [0, 1, 2, 3]
+    //fizzArray(1) → [0]
+    //fizzArray(10) → [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    public int[] fizzArray(int n) {
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = i;
+        }
+        return nums;
+    }
+
+
+    //
+    //Given an array of ints, return true if every element is a 1 or a 4.
+    //
+    //
+    //only14([1, 4, 1, 4]) → true
+    //only14([1, 4, 2, 4]) → false
+    //only14([1, 1]) → true
+
+    public boolean only14(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 1 && nums[i] != 4) return false;
+        }
+        return true;
+    }
+
+
+    //Given a number n, create and return a new string array of length n, containing the strings "0", "1" "2" .. through n-1. N may be 0, in which case just return a length 0 array. Note: String.valueOf(xxx) will make the String form of most types. The syntax to make a new string array is: new String[desired_length]  (See also: FizzBuzz Code)
+    //
+    //
+    //fizzArray2(4) → ["0", "1", "2", "3"]
+    //fizzArray2(10) → ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    //fizzArray2(2) → ["0", "1"]
+
+    public String[] fizzArray2(int n) {
+        String[] str = new String[n];
+        for (int i = 0; i < n; i++) {
+            str[i] = String.valueOf(i);
+        }
+        return str;
+    }
+
+
+    //
+    //Given an array of ints, return true if it contains no 1's or it contains no 4's.
+    //
+    //
+    //no14([1, 2, 3]) → true
+    //no14([1, 2, 3, 4]) → false
+    //no14([2, 3, 4]) → true
+
+    public boolean no14(int[] nums) {
+        boolean one = false;
+        boolean four = false;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1) one = true;
+            if (nums[i] == 4) four = true;
+        }
+        return (!(one && four));
+    }
+
+
+    //
+    //We'll say that a value is "everywhere" in an array if for every pair of adjacent elements in the array, at least one of the pair is that value. Return true if the given value is everywhere in the array.
+    //
+    //
+    //isEverywhere([1, 2, 1, 3], 1) → true
+    //isEverywhere([1, 2, 1, 3], 2) → false
+    //isEverywhere([1, 2, 1, 3, 4], 1) → false
+
+    public boolean isEverywhere(int[] nums, int val) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] != val && nums[i + 1] != val) return false;
+        }
+        return true;
+    }
+
+
+    //
+    //Given an array of ints, return true if the array contains a 2 next to a 2 or a 4 next to a 4, but not both.
+    //
+    //
+    //either24([1, 2, 2]) → true
+    //either24([4, 4, 1]) → true
+    //either24([4, 4, 1, 2, 2]) → false
+
+    public boolean either24(int[] nums) {
+        boolean two = false;
+        boolean four = false;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == 2 && nums[i + 1] == 2) two = true;
+            if (nums[i] == 4 && nums[i + 1] == 4) four = true;
+        }
+        if (two && four) return false;
+        else return (two || four);
+    }
+
+
+    //
+    //Given arrays nums1 and nums2 of the same length, for every element in nums1, consider the corresponding element in nums2 (at the same index). Return the count of the number of times that the two elements differ by 2 or less, but are not equal.
+    //
+    //
+    //matchUp([1, 2, 3], [2, 3, 10]) → 2
+    //matchUp([1, 2, 3], [2, 3, 5]) → 3
+    //matchUp([1, 2, 3], [2, 3, 3]) → 2
+
+    public int matchUp(int[] nums1, int[] nums2) {
+        int k = 0;
+        for (int i = 0; i < nums1.length; i++) {
+            if (Math.abs(nums1[i] - nums2[i]) > 0 && Math.abs(nums1[i] - nums2[i]) <= 2) k++;
+        }
+        return k;
+    }
+
+
+    //
+    //Given an array of ints, return true if the array contains two 7's next to each other, or there are two 7's separated by one element, such as with {7, 1, 7}.
+    //
+    //
+    //has77([1, 7, 7]) → true
+    //has77([1, 7, 1, 7]) → true
+    //has77([1, 7, 1, 1, 7]) → false
+
+    public boolean has77(int[] nums) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == 7 && nums[i + 1] == 7) return true;
+            if (i < nums.length - 2 && nums[i] == 7 && nums[i + 2] == 7) return true;
+        }
+        return false;
+    }
+
+
+    //
+    //Given an array of ints, return true if there is a 1 in the array with a 2 somewhere later in the array.
+    //
+    //
+    //has12([1, 3, 2]) → true
+    //has12([3, 1, 2]) → true
+    //has12([3, 1, 4, 5, 2]) → true
+
+    public boolean has12(int[] nums) {
+        int index1 = 0;
+        int index2 = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1) index1 = i + 1;
+            if (nums[i] == 2) index2 = i + 1;
+            if (index1 != 0 && index2 != 0 && index2 > index1) return true;
+        }
+        return false;
+    }
+
+
+    //Given an array of ints, return true if the array contains either 3 even or 3 odd values all next to each other.
+    //
+    //
+    //modThree([2, 1, 3, 5]) → true
+    //modThree([2, 1, 2, 5]) → false
+    //modThree([2, 4, 2, 5]) → true
+
+    public boolean modThree(int[] nums) {
+        if (nums.length < 3) return false;
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] % 2 == 0 && nums[i + 1] % 2 == 0 && nums[i + 2] % 2 == 0 || nums[i] % 2 == 1 && nums[i + 1] % 2 == 1 && nums[i + 2] % 2 == 1)
                 return true;
         }
         return false;
@@ -144,258 +352,304 @@
 
 
     //
-    //Given two strings, a and b, create a bigger string made of the first char of a, the first char of b, the second char of a, the second char of b, and so on. Any leftover chars go at the end of the result.
+    //Given an array of ints, return true if the value 3 appears in the array exactly 3 times, and no 3's are next to each other.
     //
     //
-    //mixString("abc", "xyz") → "axbycz"
-    //mixString("Hi", "There") → "HTihere"
-    //mixString("xxxx", "There") → "xTxhxexre"
+    //haveThree([3, 1, 3, 1, 3]) → true
+    //haveThree([3, 1, 3, 3]) → false
+    //haveThree([3, 4, 3, 3, 4]) → false
 
-    public String mixString(String a, String b) {
-        String result = "";
-        if (a.length() < b.length()) {
-            for (int i = 0; i < a.length(); i++) {
-                result += a.substring(i, i + 1) + b.substring(i, i + 1);
-            }
-            result = result + b.substring(a.length());
-        } else {
-            for (int i = 0; i < b.length(); i++) {
-                result += a.substring(i, i + 1) + b.substring(i, i + 1);
-            }
-            result = result + a.substring(b.length());
+    public boolean haveThree(int[] nums) {
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums.length < 5) return false;
+            if (i < nums.length - 4 && nums[i] == 3 && nums[i + 2] == 3 && nums[i + 4] == 3) count++;
         }
-        return result;
-    }
-
-    //
-    //Given a string and an int n, return a string made of n repetitions of the last n characters of the string. You may assume that n is between 0 and the length of the string, inclusive.
-    //
-    //
-    //repeatEnd("Hello", 3) → "llollollo"
-    //repeatEnd("Hello", 2) → "lolo"
-    //repeatEnd("Hello", 1) → "o"
-
-    public String repeatEnd(String str, int n) {
-        int length = str.length();
-        String result = "";
-        for (int i = length - n; i < length; i++) {
-            result = result + str.substring(length - n, length);
-        }
-        return result;
+        return (count == 1);
     }
 
 
     //
-    //Given a string and an int n, return a string made of the first n characters of the string, followed by the first n-1 characters of the string, and so on. You may assume that n is between 0 and the length of the string, inclusive (i.e. n >= 0 and n <= str.length()).
+    //Given an array of ints, return true if every 2 that appears in the array is next to another 2.
     //
     //
-    //repeatFront("Chocolate", 4) → "ChocChoChC"
-    //repeatFront("Chocolate", 3) → "ChoChC"
-    //repeatFront("Ice Cream", 2) → "IcI"
+    //twoTwo([4, 2, 2, 3]) → true
+    //twoTwo([2, 2, 4]) → true
+    //twoTwo([2, 2, 4, 2]) → false
 
-    public String repeatFront(String str, int n) {
-        int length = str.length();
-        String result = "";
-        if (n <= length) {
-            for (int i = n; i > 0; i--) {
-                result += str.substring(0, i);
+    public boolean twoTwo(int[] nums) {
+        int len = nums.length;
+        boolean find = false;
+        boolean res = true;
+        for (int i = 0; i < len; i++) {
+            if (nums[i] != 2) find = false;
+            if (nums[i] == 2 && find) res = true;
+            if (nums[i] == 2 && !find) {
+                res = false;
+                find = true;
             }
         }
-        return result;
-    }
-
-
-    //
-    //Given two strings, word and a separator sep, return a big string made of count occurrences of the word, separated by the separator string.
-    //
-    //
-    //repeatSeparator("Word", "X", 3) → "WordXWordXWord"
-    //repeatSeparator("This", "And", 2) → "ThisAndThis"
-    //repeatSeparator("This", "And", 1) → "This"
-
-    public String repeatSeparator(String word, String sep, int count) {
-        String result = "";
-        if (count >= 1) {
-            for (int i = 0; i < count - 1; i++) {
-                result += word + sep;
-            }
-            result += word;
-        }
-
-        return result;
-    }
-
-
-    //
-    //Given a string, consider the prefix string made of the first N chars of the string. Does that prefix string appear somewhere else in the string? Assume that the string is not empty and that N is in the range 1..str.length().
-    //
-    //
-    //prefixAgain("abXYabc", 1) → true
-    //prefixAgain("abXYabc", 2) → true
-    //prefixAgain("abXYabc", 3) → false
-
-    public boolean prefixAgain(String str, int n) {
-        int length = str.length();
-        if (n < length) {
-            for (int i = n; i <= length - n; i++) {
-                if (str.substring(0, n).equals(str.substring(i, i + n))) return true;
-            }
-        }
-        return false;
+        return res;
     }
 
     //
-    //Given a string, does "xyz" appear in the middle of the string? To define middle, we'll say that the number of chars to the left and right of the "xyz" must differ by at most one. This problem is harder than it looks.
+    //Return true if the group of N numbers at the start and end of the array are the same. For example, with {5, 6, 45, 99, 13, 5, 6}, the ends are the same for n=0 and n=2, and false for n=1 and n=3. You may assume that n is in the range 0..nums.length inclusive.
     //
     //
-    //xyzMiddle("AAxyzBB") → true
-    //xyzMiddle("AxyzBB") → true
-    //xyzMiddle("AxyzBBB") → false
+    //sameEnds([5, 6, 45, 99, 13, 5, 6], 1) → false
+    //sameEnds([5, 6, 45, 99, 13, 5, 6], 2) → true
+    //sameEnds([5, 6, 45, 99, 13, 5, 6], 3) → false
 
-    public boolean xyzMiddle(String str) {
-        int length = str.length();
-        if (length < 3) return false;
-        int start1 = length / 2 - 1;
-        int start2 = length / 2 - 2;
-        if (length % 2 == 0) {
-            if (str.substring(start1, start1 + 3).equals("xyz")) return true;
-            if (str.substring(start2, start2 + 3).equals("xyz")) return true;
-        } else if (str.substring(start1, start1 + 3).equals("xyz")) return true;
-        return false;
-    }
-
-    //A sandwich is two pieces of bread with something in between. Return the string that is between the first and last appearance of "bread" in the given string, or return the empty string "" if there are not two pieces of bread.
-    //
-    //
-    //getSandwich("breadjambread") → "jam"
-    //getSandwich("xxbreadjambreadyy") → "jam"
-    //getSandwich("xxbreadyy") → ""
-
-    public String getSandwich(String str) {
-        int index1 = str.indexOf("bread");
-        int index2 = str.lastIndexOf("bread");
-        if (index1 != index2 && index1 != -1 && index1 != -1) return str.substring(index1 + 5, index2);
-        return "";
-    }
-
-
-    //
-    //Returns true if for every '*' (star) in the string, if there are chars both immediately before and after the star, they are the same.
-    //
-    //
-    //sameStarChar("xy*yzz") → true
-    //sameStarChar("xy*zzz") → false
-    //sameStarChar("*xa*az") → true
-
-    public boolean sameStarChar(String str) {
-        for (int i = 1; i < str.length() - 1; i++) {
-            if (str.charAt(i) == '*') {
-                if (str.charAt(i - 1) != str.charAt(i + 1)) return false;
-            }
+    public boolean sameEnds(int[] nums, int len) {
+        //if (len == 0) return true;
+        for (int i = 0; i < len; i++) {
+            if (nums[i] != nums[nums.length - len + i]) return false;
         }
         return true;
     }
 
+    //Return true if the array contains, somewhere, three increasing adjacent numbers like .... 4, 5, 6, ... or 23, 24, 25.
+    //
+    //
+    //tripleUp([1, 4, 5, 6, 2]) → true
+    //tripleUp([1, 2, 3]) → true
+    //tripleUp([1, 2, 4]) → false
 
-    //
-    //Given a string, compute a new string by moving the first char to come after the next two chars, so "abc" yields "bca". Repeat this process for each subsequent group of 3 chars, so "abcdef" yields "bcaefd". Ignore any group of fewer than 3 chars at the end.
-    //
-    //
-    //oneTwo("abc") → "bca"
-    //oneTwo("tca") → "cat"
-    //oneTwo("tcagdo") → "catdog"
-
-    public String oneTwo(String str) {
-        int length = str.length();
-        int tail = length % 3;
-        String result = "";
-        if (length < 3) return "";
-        for (int i = 0; i < length - tail; i += 3) {
-            result += str.substring(i + 1, i + 3) + str.substring(i, i + 1);
+    public boolean tripleUp(int[] nums) {
+        int counter = 0;
+        if (nums.length < 3) return false;
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i + 2] - nums[i + 1] == 1 && nums[i + 1] - nums[i] == 1) counter++;
         }
-        return result;
+        return (counter > 0);
     }
 
 
     //
-    //Look for patterns like "zip" and "zap" in the string -- length-3, starting with 'z' and ending with 'p'. Return a string where for all such words, the middle letter is gone, so "zipXzap" yields "zpXzp".
+    //Given start and end numbers, return a new array containing the sequence of integers from start up to but not including end, so start=5 and end=10 yields {5, 6, 7, 8, 9}. The end number will be greater or equal to the start number. Note that a length-0 array is valid. (See also: FizzBuzz Code)
     //
     //
-    //zipZap("zipXzap") → "zpXzp"
-    //zipZap("zopzop") → "zpzp"
-    //zipZap("zzzopzop") → "zzzpzp"
+    //fizzArray3(5, 10) → [5, 6, 7, 8, 9]
+    //fizzArray3(11, 18) → [11, 12, 13, 14, 15, 16, 17]
+    //fizzArray3(1, 3) → [1, 2]
 
-    public String zipZap(String str) {
-        String result = "";
-        if (str.length() < 3) return str;
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == 'z' && str.charAt(i + 2) == 'p') {
-                result += "zp";
-                i = i + 2;
-            } else result += str.charAt(i);
+    public int[] fizzArray3(int start, int end) {
+        int[] fizz = new int[end - start];
+        for (int i = 0; i < fizz.length; i++) {
+            fizz[i] = start + i;
         }
-        return result;
-    }
-
-    //
-    //Return a version of the given string, where for every star (*) in the string the star and the chars immediately to its left and right are gone. So "ab*cd" yields "ad" and "ab**cd" also yields "ad".
-    //
-    //
-    //starOut("ab*cd") → "ad"
-    //starOut("ab**cd") → "ad"
-    //starOut("sm*eilly") → "silly"
-
-    public String starOut(String str) {
-        int length = str.length();
-        String result = "";
-        if (!str.contains("*")) return str;
-        for (int i = 0; i < length; i++) {
-            if (str.charAt(i) == '*') continue;
-            if (i != length - 1 && str.charAt(i + 1) == '*' || i != 0 && str.charAt(i - 1) == '*') continue;
-            result += str.substring(i, i + 1);
-        }
-        return result;
-    }
-
-    //Given a string and a non-empty word string, return a version of the original String where all chars have been replaced by pluses ("+"), except for appearances of the word string which are preserved unchanged.
-    //
-    //
-    //plusOut("12xy34", "xy") → "++xy++"
-    //plusOut("12xy34", "1") → "1+++++"
-    //plusOut("12xy34xyabcxy", "xy") → "++xy++xy+++xy"
-
-    public String plusOut(String str, String word) {
-
-        String result = "";
-        for (int i = 0; i < str.length(); i++) {
-
-            if (i + word.length() <= str.length() && str.substring(i, i + word.length()).equals(word)) {
-                result += word;
-                i += word.length() - 1;
-            } else result += "+";
-        }
-        return result;
+        return fizz;
     }
 
 
     //
-    //Given a string and a non-empty word string, return a string made of each char just before and just after every appearance of the word in the string. Ignore cases where there is no char before or after the word, and a char may be included twice if it is between two words.
+    //Return an array that is "left shifted" by one -- so {6, 2, 5, 3} returns {2, 5, 3, 6}. You may modify and return the given array, or return a new array.
     //
     //
-    //wordEnds("abcXY123XYijk", "XY") → "c13i"
-    //wordEnds("XY123XY", "XY") → "13"
-    //wordEnds("XY1XY", "XY") → "11"
+    //shiftLeft([6, 2, 5, 3]) → [2, 5, 3, 6]
+    //shiftLeft([1, 2]) → [2, 1]
+    //shiftLeft([1]) → [1]
 
-    public String wordEnds(String str, String word) {
-        int slen = str.length();
-        int wlen = word.length();
-        String result = "";
-        for (int i = 0; i < slen - wlen + 1; i++) {
-            if (i > 0 && str.substring(i, i + wlen).equals(word)) result += str.charAt(i - 1);
-            if (i < slen - wlen && str.substring(i, i + wlen).equals(word)) result += str.charAt(i + wlen);
+    public int[] shiftLeft(int[] nums) {
+        int tmp = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            tmp = nums[i];
+            nums[i] = nums[i + 1];
+            nums[i + 1] = tmp;
         }
-        return result;
+        return nums;
+    }
+
+
+    //
+    //For each multiple of 10 in the given array, change all the values following it to be that multiple of 10, until encountering another multiple of 10. So {2, 10, 3, 4, 20, 5} yields {2, 10, 10, 10, 20, 20}.
+    //
+    //
+    //tenRun([2, 10, 3, 4, 20, 5]) → [2, 10, 10, 10, 20, 20]
+    //tenRun([10, 1, 20, 2]) → [10, 10, 20, 20]
+    //tenRun([10, 1, 9, 20]) → [10, 10, 10, 20]
+
+    public int[] tenRun(int[] nums) {
+        int k = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] % 10 == 0) {
+                k = nums[i];
+            } else if (k != -1) nums[i] = k;
+        }
+        return nums;
+    }
+
+
+    //Given a non-empty array of ints, return a new array containing the elements from the original array that come before the first 4 in the original array. The original array will contain at least one 4. Note that it is valid in java to create an array of length 0.
+    //
+    //
+    //pre4([1, 2, 4, 1]) → [1, 2]
+    //pre4([3, 1, 4]) → [3, 1]
+    //pre4([1, 4, 4]) → [1]
+
+    public int[] pre4(int[] nums) {
+
+        int len2 = 0;
+        int i = 0;
+        while (nums[i] != 4) i++;
+
+        int[] ar = new int[i];
+        for (int j = 0; j < i; j++) {
+            ar[j] = nums[j];
+        }
+        return ar;
+    }
+
+
+    //
+    //Given a non-empty array of ints, return a new array containing the elements from the original array that come after the last 4 in the original array. The original array will contain at least one 4. Note that it is valid in java to create an array of length 0.
+    //
+    //
+    //post4([2, 4, 1, 2]) → [1, 2]
+    //post4([4, 1, 4, 2]) → [2]
+    //post4([4, 4, 1, 2, 3]) → [1, 2, 3]
+
+    public int[] post4(int[] nums) {
+        int len = nums.length;
+        int ar[];
+        int i = len - 1;
+        while (nums[i] != 4) i--;
+        ar = new int[len - i - 1];
+        for (int j = 0; j < ar.length; j++)
+            ar[j] = nums[i + j + 1];
+        return ar;
+    }
+
+
+    //
+    //We'll say that an element in an array is "alone" if there are values before and after it, and those values are different from it. Return a version of the given array where every instance of the given value which is alone is replaced by whichever value to its left or right is larger.
+    //
+    //
+    //notAlone([1, 2, 3], 2) → [1, 3, 3]
+    //notAlone([1, 2, 3, 2, 5, 2], 2) → [1, 3, 3, 5, 5, 2]
+    //notAlone([3, 4], 3) → [3, 4]
+
+    public int[] notAlone(int[] nums, int val) {
+        for (int i = 1; i < nums.length - 1; i++) {
+            if (nums[i] == val) {
+                if (nums[i] == nums[i - 1] || nums[i] == nums[i + 1]) {
+                    i++;
+                } else if (nums[i + 1] > nums[i - 1]) nums[i] = nums[i + 1];
+                else nums[i] = nums[i - 1];
+            }
+        }
+        return nums;
+    }
+
+
+    //
+    //Return an array that contains the exact same numbers as the given array, but rearranged so that all the zeros are grouped at the start of the array. The order of the non-zero numbers does not matter. So {1, 0, 0, 1} becomes {0 ,0, 1, 1}. You may modify and return the given array or make a new array.
+    //
+    //
+    //zeroFront([1, 0, 0, 1]) → [0, 0, 1, 1]
+    //zeroFront([0, 1, 1, 0, 1]) → [0, 0, 1, 1, 1]
+    //zeroFront([1, 0]) → [0, 1]
+
+    public int[] zeroFront(int[] nums) {
+        int tmp = 0;
+        int z = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                tmp = nums[z];
+                nums[z] = nums[i];
+                nums[i] = tmp;
+                z++;
+            }
+        }
+        return nums;
+    }
+
+
+    //
+    //Return a version of the given array where all the 10's have been removed. The remaining elements should shift left towards the start of the array as needed, and the empty spaces a the end of the array should be 0. So {1, 10, 10, 2} yields {1, 2, 0, 0}. You may modify and return the given array or make a new array.
+    //
+    //
+    //withoutTen([1, 10, 10, 2]) → [1, 2, 0, 0]
+    //withoutTen([10, 2, 10]) → [2, 0, 0]
+    //withoutTen([1, 99, 10]) → [1, 99, 0]
+
+    public int[] withoutTen(int[] nums) {
+        int[] ar = new int[nums.length];
+        int j = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 10) {
+                ar[j] = nums[i];
+                j++;
+            }
+        }
+
+        return ar;
 
     }
 
-    
+
+    //Return a version of the given array where each zero value in the array is replaced by the largest odd value to the right of the zero in the array. If there is no odd value to the right of the zero, leave the zero as a zero.
+    //
+    //
+    //zeroMax([0, 5, 0, 3]) → [5, 5, 3, 3]
+    //zeroMax([0, 4, 0, 3]) → [3, 4, 3, 3]
+    //zeroMax([0, 1, 0]) → [1, 1, 0]
+
+    public int[] zeroMax(int[] nums) {
+        int max = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == 0) {
+                for (int j = i + 1; j < nums.length; j++) {
+                    if (nums[j] % 2 == 1 && nums[j] > max) max = nums[j];
+                }
+                nums[i] = max;
+                max = 0;
+
+            }
+        }
+        return nums;
+    }
+
+
+    //
+    //Return an array that contains the exact same numbers as the given array, but rearranged so that all the even numbers come before all the odd numbers. Other than that, the numbers can be in any order. You may modify and return the given array, or make a new array.
+    //
+    //
+    //evenOdd([1, 0, 1, 0, 0, 1, 1]) → [0, 0, 0, 1, 1, 1, 1]
+    //evenOdd([3, 3, 2]) → [2, 3, 3]
+    //evenOdd([2, 2, 2]) → [2, 2, 2]
+
+    public int[] evenOdd(int[] nums) {
+        int x = 0;
+        int tmp = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] % 2 == 0) {
+                tmp = nums[x];
+                nums[x] = nums[i];
+                x++;
+                nums[i] = tmp;
+            }
+        }
+        return nums;
+    }
+
+
+    //
+    //This is slightly more difficult version of the famous FizzBuzz problem which is sometimes given as a first problem for job interviews. (See also: FizzBuzz Code.) Consider the series of numbers beginning at start and running up to but not including end, so for example start=1 and end=5 gives the series 1, 2, 3, 4. Return a new String[] array containing the string form of these numbers, except for multiples of 3, use "Fizz" instead of the number, for multiples of 5 use "Buzz", and for multiples of both 3 and 5 use "FizzBuzz". In Java, String.valueOf(xxx) will make the String form of an int or other type. This version is a little more complicated than the usual version since you have to allocate and index into an array instead of just printing, and we vary the start/end instead of just always doing 1..100.
+    //
+    //
+    //fizzBuzz(1, 6) → ["1", "2", "Fizz", "4", "Buzz"]
+    //fizzBuzz(1, 8) → ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7"]
+    //fizzBuzz(1, 11) → ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz"]
+
+    public String[] fizzBuzz(int start, int end) {
+        String[] str = new String[end - start];
+        for (int i = start; i < end; i++) {
+            if (i % 3 == 0 && i % 5 == 0) {
+                str[i - start] = "FizzBuzz";
+            } else if (i % 3 == 0) str[i - start] = "Fizz";
+            else if (i % 5 == 0) str[i - start] = "Buzz";
+            else str[i - start] = String.valueOf(i);
+        }
+        return str;
+    }
